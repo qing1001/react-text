@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 
 import { Form, Input, Button, Icon } from 'antd';
 
-// 图片必须引入，才会被webpack打包
 import logo from './logo.png';
 import './index.less';
 
-export default class Login extends Component {
+@Form.create()
+class Login extends Component {
     render() {
+
+        // getFieldDecorator 高阶组件：用来表单校验
+        const { getFieldDecorator } = this.props.form;
+
         return <div className='login'>
             <header className='login-header'>
                 <img src={logo} alt='logo' />
@@ -18,12 +22,41 @@ export default class Login extends Component {
                 <Form className='login-form'>
                     <Form.Item>
 
-                        <Input
-                            prefix={
-                                <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
-                            }
-                            placeholder='用户名'
-                        />
+                        {
+                            getFieldDecorator(
+                                //传入两个参数
+                                'username',
+                                {
+                                    //required: true必填
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: '用户名不能为空'
+                                        },
+                                        {
+                                            min: 4,
+                                            message: '用户名必须大于4位'
+                                        },
+                                        {
+                                            max: 15,
+                                            message: '用户名必须小于15位'
+                                        },
+                                        {
+                                            pattern: /^\w+$/,
+                                            message: '用户名只能包含英文、数字、下划线'
+                                        }
+                                    ],
+                                }
+
+                            )(
+                                <Input
+                                    prefix={
+                                        <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
+                                    }
+                                    placeholder='用户名'
+                                />
+                            )
+                        }
 
                     </Form.Item>
                     <Form.Item>
@@ -46,3 +79,8 @@ export default class Login extends Component {
         </div>
     }
 }
+
+// Form.create()(Login) 高阶组件：给Login传递form属性
+// export default Form.create()(Login);
+//可以简写为
+export default Login;
