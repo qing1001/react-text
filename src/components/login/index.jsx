@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Form, Input, Button, Icon } from 'antd';
+import { Form, Input, Button, Icon, message } from 'antd';
 import axios from 'axios'
 import logo from './logo.png';
 import './index.less';
@@ -38,31 +38,41 @@ class Login extends Component {
         callback();
     };
 
-    login = (e) =>{
+    login = (e) => {
         e.preventDefault();
-        
+
         //校验表单,校验失败就不需要发送请求
         //validateFields专门用来校验表单并收集数据
-        this.props.form.validateFields((err,values) =>{
-        if(!err){
-            const {username,password} = values;
-            //发送请求,请求登录
-            axios
-                .post('/api/login',{username,password})
-                .then(
-                    console.log(1111) 
-                    
-                )
-                .catch(
-                    err => {
-                        console.log(err);
-                        
-                    }
-                )
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                const { username, password } = values;
+                //发送请求,请求登录
+                axios
+                    .post('/api/login', { username, password })
+                    .then(
 
-        }
+                        response => {
+                            if (response.data.status === 0) {
+                                this.props.history.replace('/');
+                            }else{
+                                message.error(response.data.msg);
+
+                                this.props.form.resetFields(['password','username']);
+                            }
+                        }
+                    )
+                    .catch(
+                        err => {
+                            console.log(err);
+                            message.error('网络错误');
+
+                            this.props.form.resetFields(['password','username']);
+                        }
+                    )
+
+            }
         })
-        
+
     }
     render() {
 
@@ -76,7 +86,7 @@ class Login extends Component {
             </header>
             <section className='login-section'>
                 <h3>用户登录</h3>
-                <Form className='login-form' onSubmit = {this.login}>
+                <Form className='login-form' onSubmit={this.login}>
                     <Form.Item>
 
                         {
@@ -146,7 +156,7 @@ class Login extends Component {
 
                     </Form.Item>
                     <Form.Item>
-                        <Button className='login-form-btn' type='primary' htmlType = 'submit'>
+                        <Button className='login-form-btn' type='primary' htmlType='submit'>
                             登录
                         </Button>
                     </Form.Item>
