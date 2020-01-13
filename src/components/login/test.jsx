@@ -10,7 +10,7 @@ export default function Test() {
     const axiosInstance = axios.create({
         //修改的配置
         baseURL: '/api', //可放置公共路径
-        timeout: 10000, //请求的超时时间,超出时间会自动中断
+        timeout: 100000, //请求的超时时间,超出时间会自动中断
         //设置公共请求头
         headers: {
             //只能写死
@@ -45,6 +45,40 @@ export default function Test() {
         }
     );
 
+    //响应拦截器统一处理错误
+    axiosInstance.interceptors.response.use(
+        //请求响应成功
+        (response) => {
+           if(response.data.status === 0){
+               return response.data.data;
+           }else{
+               return Promise.reject(response.data.msg);
+           }
+        },
+        //请求响应失败
+        (err) => {
+            const errCode = {
+                401:'没有权限访问当前接口',
+                403:'禁止访问当前接口',
+                404:'未找到当前资源',
+                500:'服务器发生未知错误,请联系管理员'
+            }
+            let errMessage = '';
+            if(err.response){
+                //受到响应
+               errMessage = errCode[err.response.status];
+            }else{
+                if(err.message.indexOf('Network Error') !== -1){
+                    errMessage= '网络链接失败,请一会在式'
+                }else if(err.message.indexOf('timeout') !== -1){
+                    errMessage= '网络链接超时,请一会在式'
+                }
+            }
+           return Promise.reject(errMessage || '发生未知错误,请联系管理员')
+        }
+
+    );
+
     let token = '';
     let id = '';
     const handleClick1 = () => {
@@ -58,6 +92,7 @@ export default function Test() {
         })
             .then(
                 response => {
+                    
                     if (response.data.status === 0) {
                         //除了登录页面其他都需要令牌token
                         // console.log(response.data);
@@ -101,7 +136,7 @@ export default function Test() {
             .catch(
                 err => {
                     console.log(err);
-                    message.error('网络错误')
+                    message.error('err')
                 }
 
             )
