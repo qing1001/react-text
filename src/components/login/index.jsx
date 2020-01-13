@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 
 import { Form, Input, Button, Icon, message } from 'antd';
-import axios from 'axios'
+import { reqLogin } from '../../api/index'
+import {setItem} from '../../utils/storage'
 import logo from './logo.png';
 import './index.less';
 
@@ -47,7 +48,7 @@ class Login extends Component {
             if (!err) {
                 const { username, password } = values;
                 //发送请求,请求登录
-                axios
+                /*axios
                     .post('/api/login', { username, password })
                     .then(
 
@@ -68,8 +69,20 @@ class Login extends Component {
 
                             this.props.form.resetFields(['password','username']);
                         }
+                    )*/
+                reqLogin(username, password)
+                    .then(
+                        (response)=>{
+                            setItem('user',response);
+                            this.props.history.replace('/')
+                        }
                     )
-
+                    .catch(
+                        msg => {
+                            message.error(msg)
+                            this.props.form.resetFields(['password','username'])
+                        }
+                    )
             }
         })
 
