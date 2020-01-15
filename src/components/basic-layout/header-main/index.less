@@ -1,3 +1,6 @@
+.ant-layout-header{
+    height: 80px;
+}
 .header-main{
     height: 80px;
     .header-main-top {
@@ -5,8 +8,14 @@
         height: 50px;
         text-align: right;
         border-bottom: 1px solid #1DA57A;
+        padding-right: 10px;
+
+        .header-main-lang {
+            margin: 0 10px;
+        }
     }
     .header-main-bottom {
+        padding-right: 20px;
         line-height: 30px;
         height: 30px;
         display: flex;
@@ -17,7 +26,19 @@
             font-size: 16px;
             font-weight: bold;
             flex: 1;
-          }
+            position: relative;
+            &::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                bottom: -40px;
+                transform: translateX(-50%);
+                border-top: 20px solid #fff;
+                border-bottom: 20px solid transparent;
+                border-left: 20px solid transparent;
+                border-right: 20px solid transparent;
+            }
+        }
       
         .header-main-right{
             text-align: right;

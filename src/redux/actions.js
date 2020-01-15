@@ -9,8 +9,13 @@
 import { reqLogin } from '../api';
 import { setItem } from '../utils/storage';
 
-const saveUser = user => ({ type: 'SAVE_USER', data: user });
 
+export const removeUser = () => ({type:'REMOVE_USER'})
+
+export const changeLanguage = lang => ({ type:'CHANGE_LANGUAGE',data:lang});
+
+
+const saveUser = user => ({ type: 'SAVE_USER', data: user });
 export const saveUserAsync = (username, password) => {
     return (dispatch) => {
         //异步代码

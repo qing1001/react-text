@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Breadcrumb } from 'antd';
+import { FormattedMessage } from 'react-intl';
 import LeftNav from './left-nav'
 import HeaderMain from './header-main'
 import logo from '../../assets/imgs/logo.png';
@@ -29,7 +30,7 @@ export default class BasicLayout extends React.Component {
                 <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
                     <div className="layout-logo" >
                         <img src={logo} alt='logo' />
-                        <h1 style={{ display: isDisplay ? 'block' : 'none' }}>硅谷后台</h1>
+                        <h1 style={{ display: isDisplay ? 'block' : 'none' }}><FormattedMessage id='title' /></h1>
                     </div>
                     <LeftNav />
                 </Sider>

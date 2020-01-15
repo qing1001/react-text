@@ -20,8 +20,13 @@ function user(prevState = initUser, action) {
     }
 }
 
-function bbb(prevState = 222, action) {
+const initLaguage = navigator.language || navigator.languages[0] || 'zh-CN';
+function language (prevState = initLaguage, action) {
     switch (action.type) {
+        case 'CHANGE_LANGUAGE':
+            return action.data;
+        case 'REMOVE_USER':
+            return {};
         default:
             return prevState;
     }
@@ -29,5 +34,5 @@ function bbb(prevState = 222, action) {
 
 export default combineReducers({
     user,
-    bbb
+    language
 })

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import menus from '$conf/menus';
 const { SubMenu } = Menu;
 export default class LeftNav extends Component {
@@ -13,7 +14,8 @@ export default class LeftNav extends Component {
                     title={
                         <span>
                             <Icon type={menu.icon} />
-                            <span>{menu.title}</span>
+                            <FormattedMessage id={menu.title} />
+                            {/* <span>{menu.title}</span> */}
                         </span>
                     }
                 >
@@ -34,7 +36,8 @@ export default class LeftNav extends Component {
         return <Menu.Item key={menu.path}>
             <Link to={menu.path}>
                 <Icon type={menu.icon} />
-                <span>{menu.title}</span>
+                <FormattedMessage id={menu.title} />
+                {/* <span>{menu.title}</span> */}
             </Link>
         </Menu.Item>
     }
