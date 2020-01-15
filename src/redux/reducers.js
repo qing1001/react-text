@@ -6,7 +6,7 @@
  */
 
 import { combineReducers } from 'redux'
-import {getItem} from '../utils/storage'
+import { getItem } from '../utils/storage'
 
 //解决刷新是redux没有存储
 const initUser = getItem('user') || {};
@@ -21,7 +21,7 @@ function user(prevState = initUser, action) {
 }
 
 const initLaguage = navigator.language || navigator.languages[0] || 'zh-CN';
-function language (prevState = initLaguage, action) {
+function language(prevState = initLaguage, action) {
     switch (action.type) {
         case 'CHANGE_LANGUAGE':
             return action.data;
@@ -32,7 +32,19 @@ function language (prevState = initLaguage, action) {
     }
 }
 
+
+const initCategories = [];
+function categories(prevState = initCategories, action) {
+    switch (action.type) {
+        case 'GET_CATEGORY_LIST':
+            return action.data;
+        default:
+            return prevState;
+    }
+}
+
 export default combineReducers({
     user,
-    language
+    language,
+    categories
 })

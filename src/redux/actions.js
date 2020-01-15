@@ -6,14 +6,28 @@
  * 异步action
  * 
  */
-import { reqLogin } from '../api';
+import { reqLogin, reqGetCategoryList } from '../api';
 import { setItem } from '../utils/storage';
 
 
-export const removeUser = () => ({type:'REMOVE_USER'})
+const getCategoryList = categories => ({
+    type: 'GET_CATEGORY_LIST',
+    data: categories
+});
+export const getCategoryListAsync = () => {
+    return dispatch => {
+        // 发送请求
+        reqGetCategoryList().then(response => {
+            // 触发更新
+            dispatch(getCategoryList(response));
+        });
+    };
+};
 
-export const changeLanguage = lang => ({ type:'CHANGE_LANGUAGE',data:lang});
 
+export const removeUser = () => ({ type: 'REMOVE_USER' })
+
+export const changeLanguage = lang => ({ type: 'CHANGE_LANGUAGE', data: lang });
 
 const saveUser = user => ({ type: 'SAVE_USER', data: user });
 export const saveUserAsync = (username, password) => {
