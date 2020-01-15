@@ -1,11 +1,20 @@
 import React, { Component } from 'react'
 
 import { Form, Input, Button, Icon, message } from 'antd';
-import { reqLogin } from '../../api/index'
-import {setItem} from '../../utils/storage'
-import logo from './logo.png';
-import './index.less';
+import { connect } from 'react-redux'
+import { saveUserAsync } from '../../redux/actions';
+import withCheckLogin from '$cont/with-check-login'
 
+import logo from '../../assets/imgs/logo.png';
+import './index.less';
+@withCheckLogin
+//connect返回容器组件
+@connect(
+    //状态数据
+    null,
+    //更新状态数据的方法
+    { saveUserAsync }
+)
 @Form.create()
 class Login extends Component {
     //自定义校验规则
@@ -70,19 +79,25 @@ class Login extends Component {
                             this.props.form.resetFields(['password','username']);
                         }
                     )*/
-                reqLogin(username, password)
+                //得到登录的状态
+
+
+                // const result = this.props.saveUserAsync(username, password)
+                // console.log(result);
+                this.props.saveUserAsync(username, password)
                     .then(
-                        (response)=>{
-                            setItem('user',response);
+                        () => {
                             this.props.history.replace('/')
                         }
                     )
+
                     .catch(
-                        msg => {
-                            message.error(msg)
-                            this.props.form.resetFields(['password','username'])
+                        (msg) => {
+                            message.error(msg);
+                            this.props.form.resetFields(['password', 'username'])
                         }
                     )
+
             }
         })
 

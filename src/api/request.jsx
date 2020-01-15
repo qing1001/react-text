@@ -1,6 +1,6 @@
 import axios from 'axios';
 import errCode from '../config/error-code';
-
+import store from '$redux/store'
 //创建axios实例
 const axiosInstance = axios.create({
     baseURL: '/api',
@@ -12,7 +12,10 @@ const axiosInstance = axios.create({
 
 //请求拦截器(设置公共参数)
 axiosInstance.interceptors.request.use(config => {
-    let token = '';
+
+    //将数据该成从redux中读取数据
+    // let token = '';
+    const token = store.getState().user.token;
 
     if (token) {
         config.headers.authorization = `Bearer ${token}`;

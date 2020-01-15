@@ -5,23 +5,29 @@
  * 通过export default combineReducers调用传一个对象,对象里面传多个redux函数
  */
 
-import { combineReducers }  from 'redux'
+import { combineReducers } from 'redux'
+import {getItem} from '../utils/storage'
 
- function aaa (prevState = 111, action){
-     switch (action.type){
-         default:
-             return prevState;
-     }
- }
+//解决刷新是redux没有存储
+const initUser = getItem('user') || {};
 
- function bbb (prevState = 222, action){
-    switch (action.type){
+function user(prevState = initUser, action) {
+    switch (action.type) {
+        case 'SAVE_USER':
+            return action.data;
+        default:
+            return prevState;
+    }
+}
+
+function bbb(prevState = 222, action) {
+    switch (action.type) {
         default:
             return prevState;
     }
 }
 
 export default combineReducers({
-    aaa,
+    user,
     bbb
 })
